@@ -6,7 +6,7 @@
 #    By: pthomas <pthomas@student.42lyon.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/03 08:58:49 by pthomas           #+#    #+#              #
-#    Updated: 2021/02/08 10:27:50 by pthomas          ###   ########lyon.fr    #
+#    Updated: 2021/02/08 15:07:16 by pthomas          ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,10 +45,12 @@ COPY	./srcs/wp-config.php ./var/www/html/wordpress
 
 COPY	./srcs/start.sh .
 COPY	./srcs/wordpress.sql .
+COPY	./srcs/autoindex.sh .
 RUN		chmod 444 /var/www/html/phpmyadmin/config.inc.php \
 		&& chown -R www-data:www-data /var/www/html/wordpress \
 		&& chown -R www-data:www-data /var/www/html/phpmyadmin \
-		&& chmod +x ./start.sh
+		&& chmod +x ./start.sh \
+		&& chmod +x ./autoindex.sh
 
 EXPOSE	80 443
 
