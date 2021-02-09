@@ -6,7 +6,7 @@
 #    By: pthomas <pthomas@student.42lyon.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/03 08:58:49 by pthomas           #+#    #+#              #
-#    Updated: 2021/02/08 15:07:16 by pthomas          ###   ########lyon.fr    #
+#    Updated: 2021/02/09 15:08:40 by pthomas          ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,9 +23,10 @@ RUN		apt-get install -y nginx openssl \
 		&& rm -rf /etc/nginx/sites-enabled/default
 COPY 	./srcs/index.html ./var/www/html/
 COPY	./srcs/nginx.conf ./etc/nginx/sites-enabled/
+ENV		AUTOINDEX="on"
 
 # Generate certificate
-RUN 	yes "" | openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ./etc/ssl/certs/localhost.key -out ./etc/ssl/certs/localhost.crt
+RUN 	openssl req -x509 -nodes -days 365 -newkey rsa:2048 -subj "/C=FR/ST=Auvergne-Rhône-Alpes/L=Lyon/emailAddress=pthomas@student.42lyon.fr" -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt
 
 # Install phpmyadmin
 RUN		apt-get install -y php7.3 php7.3-fpm php7.3-mysql  php7.3-curl php7.3-gd php7.3-intl php7.3-xml php7.3-zip php7.3-imagick php7.3-apcu php7.3-mbstring php7.3-cli \
@@ -48,11 +49,9 @@ COPY	./srcs/wordpress.sql .
 COPY	./srcs/autoindex.sh .
 RUN		chmod 444 /var/www/html/phpmyadmin/config.inc.php \
 		&& chown -R www-data:www-data /var/www/html/wordpress \
-		&& chown -R www-data:www-data /var/www/html/phpmyadmin \
-		&& chmod +x ./start.sh \
-		&& chmod +x ./autoindex.sh
+		&& chown -R www-data:www-data /var/www/html/phpmyadmin
 
 EXPOSE	80 443
 
-CMD		./start.sh
+CMD		./autoindex.sh && ./start.sh
 
