@@ -6,7 +6,7 @@
 #    By: pthomas <pthomas@student.42lyon.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/03 08:58:49 by pthomas           #+#    #+#              #
-#    Updated: 2021/02/09 15:08:40 by pthomas          ###   ########lyon.fr    #
+#    Updated: 2021/02/10 09:19:38 by pthomas          ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ COPY	./srcs/nginx.conf ./etc/nginx/sites-enabled/
 ENV		AUTOINDEX="on"
 
 # Generate certificate
-RUN 	openssl req -x509 -nodes -days 365 -newkey rsa:2048 -subj "/C=FR/ST=Auvergne-Rhône-Alpes/L=Lyon/emailAddress=pthomas@student.42lyon.fr" -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt
+RUN		openssl req -x509 -nodes -days 365 -newkey rsa:2048 -subj "/C=FR/ST=Auvergne-Rhône-Alpes/L=Lyon/emailAddress=pthomas@student.42lyon.fr" -keyout ./etc/ssl/certs/localhost.key -out ./etc/ssl/certs/localhost.crt
 
 # Install phpmyadmin
 RUN		apt-get install -y php7.3 php7.3-fpm php7.3-mysql  php7.3-curl php7.3-gd php7.3-intl php7.3-xml php7.3-zip php7.3-imagick php7.3-apcu php7.3-mbstring php7.3-cli \
